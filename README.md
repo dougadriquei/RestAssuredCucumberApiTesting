@@ -6,7 +6,7 @@
 
 
 
-This is a simple project using Appium, Android, Java and JUNIT, automating interfaces of a weather forecast application
+This is a simple project using Cucumber, Rest Assured, Java and TestNG, automating interfaces of a weather forecast application
 
 ## Features 💻
 
