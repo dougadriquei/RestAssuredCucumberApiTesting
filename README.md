@@ -6,7 +6,7 @@
 
 
 
-This is a simple project using Cucumber, Rest Assured, Java and TestNG, automating interfaces of a weather forecast application
+This is a simple project using Cucumber, Rest Assured, Java and TestNG, API testing of a pix payments, acconts and QR Codes.
 
 ## Features 💻
 
