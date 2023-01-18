@@ -5,6 +5,8 @@ public class Payment {
     String conciliation_id;
     Double amount;
     Recipient recipient;
+
+    RecipientFake recipientFake;
     Sender sender;
 
     public String getEnd_to_end() {
@@ -37,6 +39,10 @@ public class Payment {
 
     public void setRecipient(Recipient recipient) {
         this.recipient = recipient;
+    }
+
+    public void setRecipientFake(RecipientFake recipientFake) {
+        this.recipientFake = recipientFake;
     }
 
     public Sender getSender() {
