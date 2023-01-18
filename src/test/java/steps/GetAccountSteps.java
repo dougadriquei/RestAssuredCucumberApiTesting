@@ -17,13 +17,11 @@ public class GetAccountSteps {
     @Given("I perform GET operation for {string}")
     public void iPerformGETOperationForWithIdParameter(String url) {
         response = RestAssuredExtension.GetOps(url);
-        System.out.println(response.getTime());
         assertThat(Long.parseLong("3000"), greaterThanOrEqualTo(response.getTime()));
     }
 
     @Then("I should see the body has name as {string}")
     public void iShouldSeeTheBodyHasNameAs(String name) {
-        System.out.println(response.getBody().prettyPrint());
         assertThat(response.getBody().jsonPath().get("name").toString(), equalTo(name));
         assertThat(response.statusCode(), equalTo(200));
     }

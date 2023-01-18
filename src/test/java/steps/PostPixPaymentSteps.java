@@ -44,12 +44,19 @@ public class PostPixPaymentSteps {
         payment.setSender(sender);
     }
 
-      @Given("I want perform GET operation for {string} without bank")
+    @Given("I want perform GET operation for {string} without bank")
     public void iWantPerformGETOperationForWithIdParameterWithoutBank(String url) {
         response = RestAssuredExtension.GetOps(url);
         sender.setName(response.getBody().jsonPath().getJsonObject("name").toString());
         sender.setDocument(response.getBody().jsonPath().getJsonObject("document").toString());
         payment.setSender(sender);
+    }
+
+    @Given("I want perform GET operation for {string} without sender")
+    public void iWantPerformGETOperationForWithIdParameterWithoutSender(String url) {
+        response = RestAssuredExtension.GetOps(url);
+        sender.setName(response.getBody().jsonPath().getJsonObject("name").toString());
+        sender.setDocument(response.getBody().jsonPath().getJsonObject("document").toString());
     }
     @And("I perform POST operations for {string} with body as")
     public void iPerformPOSTOperationsForWithBodyAs(String url, DataTable table) {
@@ -98,6 +105,31 @@ public class PostPixPaymentSteps {
         payment.setEnd_to_end(response.getBody().jsonPath().getJsonObject("end_to_end").toString());
         payment.setConciliation_id(response.getBody().jsonPath().getJsonObject("conciliation_id").toString());
         payment.setAmount(-3000.00);
+        payment.setRecipient(recipient);
+    }
+
+
+    @And("I perform POST operations for {string} without amount and body as")
+    public void iPerformPOSTOperationsForWithoutAmountAndBodyAs(String url, DataTable table) {
+        String base64Encode = Base64.getEncoder().encodeToString(table.cell(1, 0).getBytes());
+        JSONObject body = new JSONObject();
+        try {
+            body.put("encoded_value", base64Encode);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        response = RestAssuredExtension.PostOpsWithBody(url, body.toString());
+        recipient = new Recipient();
+        recipient.setName(response.getBody().jsonPath().getJsonObject("holder.name").toString());
+        recipient.setDocument(response.getBody().jsonPath().getJsonObject("holder.document").toString());
+        recipient.setKey(response.getBody().jsonPath().getJsonObject("holder.key").toString());
+        recipient.setKey_type(response.getBody().jsonPath().getJsonObject("holder.key_type").toString());
+        recipientBank = new Bank();
+        recipientBank.setName(response.getBody().jsonPath().getJsonObject("holder.bank.name").toString());
+        recipientBank.setIspb(response.getBody().jsonPath().getJsonObject("holder.bank.ispb").toString());
+        recipient.setBank(recipientBank);
+        payment.setEnd_to_end(response.getBody().jsonPath().getJsonObject("end_to_end").toString());
+        payment.setConciliation_id(response.getBody().jsonPath().getJsonObject("conciliation_id").toString());
         payment.setRecipient(recipient);
     }
 
@@ -235,6 +267,26 @@ public class PostPixPaymentSteps {
         payment.setRecipient(recipient);
     }
 
+    @And("I perform POST operations for {string} without recipient and body as")
+    public void iPerformPOSTOperationsForWithoutRecipientAndBodyAs(String url, DataTable table) {
+        String base64Encode = Base64.getEncoder().encodeToString(table.cell(1, 0).getBytes());
+        JSONObject body = new JSONObject();
+        try {
+            body.put("encoded_value", base64Encode);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        response = RestAssuredExtension.PostOpsWithBody(url, body.toString());
+        recipient = new Recipient();
+        recipient.setName(response.getBody().jsonPath().getJsonObject("holder.name").toString());
+        recipient.setDocument(response.getBody().jsonPath().getJsonObject("holder.document").toString());
+        recipient.setKey(response.getBody().jsonPath().getJsonObject("holder.key").toString());
+        recipient.setKey_type(response.getBody().jsonPath().getJsonObject("holder.key_type").toString());
+        payment.setEnd_to_end(response.getBody().jsonPath().getJsonObject("end_to_end").toString());
+        payment.setConciliation_id(response.getBody().jsonPath().getJsonObject("conciliation_id").toString());
+        payment.setAmount(Double.parseDouble(response.getBody().jsonPath().getJsonObject("total_value").toString()));
+    }
+
     @Given("I want perform GET operation for {string} with document invalid")
     public void iWantPerformGETOperationForWithDocumentInvalid(String url) {
         response = RestAssuredExtension.GetOps(url);
@@ -290,7 +342,6 @@ public class PostPixPaymentSteps {
 
     @And("I should see the bad request as {string} with status code {int}")
     public void iShouldSeeTheBadRequestAsWithStatusCode(String error, int status_code) {
-        System.out.println(response.getBody().prettyPrint());
         String errorResponse = response.getBody().jsonPath().getJsonObject("error").toString();
         assertThat(errorResponse, equalTo(error));
         assertThat(response.statusCode(), equalTo(status_code));
