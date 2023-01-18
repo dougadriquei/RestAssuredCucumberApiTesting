@@ -91,8 +91,6 @@ public class PostPixPaymentSteps {
             throw new RuntimeException(e);
         }
         response = RestAssuredExtension.PostOpsWithBody(url, body.toString());
-        System.out.println(response.getBody().prettyPrint());
-        System.out.println(response.statusCode());
         recipientFake = new RecipientFake();
         recipientFake.setName(9999999.00);
         recipientFake.setDocument(9999999.00);
@@ -118,9 +116,6 @@ public class PostPixPaymentSteps {
             throw new RuntimeException(e);
         }
         response = RestAssuredExtension.PostOpsWithBody(url, body.toString());
-        System.out.println(response.getBody().prettyPrint());
-        System.out.println(response.statusCode());
-
         recipient = new Recipient();
         recipient.setName("\"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\"\n" +
                 "\"There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain...\"\n" +
