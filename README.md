@@ -6,7 +6,7 @@
 
 
 
-This is a simple project using Cucumber, Rest Assured, Java and TestNG, API testing of a pix payments, acconts and QR Codes.
+This is a simple project using Cucumber, Rest Assured, Java and TestNG, API testing and automating accounts, qr codes and payments endpoints.
 
 ## Features 💻
 
